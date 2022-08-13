@@ -1,0 +1,121 @@
+{% block extrahead %}
+<script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
+{{ block.super }}
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <script src="https://kit.fontawesome.com/6de25ea965.js" crossorigin="anonymous"></script>
+</head>
+<style>
+  body{
+        background: #f7f7ff;
+        
+    }
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid transparent;
+        border-radius: .25rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+    }
+    .me-2 {
+        margin-right: .5rem!important;
+    }
+</style>
+<body>
+
+    
+      <nav class=" top shadow navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+              <a class="navbar-brand" href="/">Stack</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                  </li>
+                 
+                  <li class="nav-item dropdown">
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                    <a class="nav-link " href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell "></i>
+                        {% if notifications or replynotifications or likenotifications %}
+                        <span class="position-absolute top-20 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                        {% endif %}          
+                        </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                      <li><a class="dropdown-item " href="/notifications/answers">Answers {% if notifications %} <span class=" answer badge rounded-pill badge-notification bg-danger">{{notifications}}</span> {% endif %} </a></li>
+                      <li><a class="dropdown-item " href="/notifications/comments"> Comments  {% if replynotifications %} <span class=" reply badge rounded-pill badge-notification bg-danger">{{replynotifications}}</span>  {% endif %} </a></li>
+                      <li><a class="dropdown-item  " href="/notifications/votes"> Votes {% if likenotifications %} <span class=" badge votes rounded-pill badge-notification bg-danger">{{likenotifications}}</span>{% endif %}</a></li>
+                    </ul>
+                    
+                    {% endif %}
+                  </li>
+                  
+                </ul>
+                <form action="{% url 'home'  %}"  class="d-flex">
+                  <input class="form-control me-2" type="search" name="q" placeholder="Search Questions" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <div class="invisible">ss</div>
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                  <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img
+                        {% if user.pic %}
+                        src="{{user.pic.url}}"
+                        {% else %}
+                        src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+                        {% endif %}
+                        class="rounded-circle"
+                        height="35"
+                        alt="Black and White Portrait of a Man"
+                        loading="lazy"
+                      />
+                  </a>
+
+                
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/profile/{{user.username}}">My profile</a></li>
+                    <li><a class="dropdown-item" href="/askquestion">Ask question</a></li>
+                    <li><a class="dropdown-item" href="/accounts/logout">Logout</a></li>
+                  </ul>
+                </div>
+                {% else %}
+                <a style="margin-right:5px;" href="/accounts/login" class="btn btn-primary" >Login </a>
+                <a href="/signup" class="btn btn-primary" > Signup</a>
+                {% endif %}
+                </div>
+                
+              </div>
+            
+          </nav>
+          <div style="clear:both ;"></div>
+    
+    {% block content %}  
+    {% endblock content %}  
+    
+    
+    
+   
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+
+</html>
+

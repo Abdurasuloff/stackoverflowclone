@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block content %}
+<title>Questions in {{category}} </title>
+<div class="container">
+      <div style="float: left; width: 69%; " >
+         <div class="card-body">
+               
+               <!--Block-->
+               <h4 class="d-flex align-items-center mb-3">Questions based on {{category}}</h4>
+               {% if questions  %}
+               {% for obj in questions  %}
+               
+               <div >
+               <p>{{obj.title}}</p>
+               <a style="float: left;" href="{% url 'detail' obj.id obj.slug  %}" type="button" class="btn btn-outline-primary">Details &#10141;</a>
+               <p style="float: right; margin-right: 50px;" class=><small><small><i class="fa-solid fa-handshake-angle"></i>{{obj.answers}} |  
+               <i class="fa-solid fa-eye"></i> {% get_hit_count for obj %} </small></small></p>
+               <div style="clear:both" ></div>
+               <hr>
+               {% endfor %}
+               {% else %}
+               <br><br><h5><center>no results</center></h5>
+               {% endif %}
+               </div>
+               <!--Block-->
+               
+               
+               
+            </div>      
+
+      </div>              
+     
+
+{% endblock content %}

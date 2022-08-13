@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block content %}
+<title>Detail| {{object.title}}</title>
+<div class="container" >
+      <script src="/static/ckeditor/ckeditor-init.js" data-ckeditor-basepath="/static/ckeditor/ckeditor/" id="ckeditor-init-script"></script>
+      <script src="/static/ckeditor/ckeditor/ckeditor.js"></script>
+      <div >
+            <br><br>                
+            <div style="float: left; width: 69%; " >
+                  <h4>{{ object.title }}</h4>
+                  <p>{{object.body|safe}}</p>
+                  <br>
+                  <p style="float: right; color: rgb(127, 127, 127); " > <a href="/profile/{{  object.author.username }}">  @{{object.author.username}} </a> | {{object.date}} | {{hits}} </p>
+                  <div style="clear:both ;"></div><hr>
+                  <div class="answers">
+                        <div  style="clear:both ;"></div>
+                        <h4 style="float: left; width: 70%;" > Here is some answers.</h4>
+                       
+                        <br>
+                        <div style="clear:both ;"></div>
+                        {% for answer in answers  %}
+                        <div id="{{answer.id}}" >
+                              <div style="   float: left; width:10%"  class=" container staff">
+                                    <a style="text-decoration: none; color:black " href="{% url 'postlike' answer.id %}"><i style="margin-top:70px" class="fa-solid fa-circle-check  "></i></a>
+                                    <h5 class="text-muted" >{{ answer.likes }}</h6>
+                              </div>
+                              <div id="comments" style="float: right; width:85%" class="ans ">
+                                    <p>{{answer.body|safe}}</p>
+                                    <footer ><small style="float:right"   class="blockquote-footer" ><a href="/profile/{{  answer.author.username }}" >@{{answer.author }} </a> | {{answer.date_answered}} </small></footer>
+                                    <hr>
+                                    <h6 class="text-muted" > Comments </h6>
+                                    {%  for comment in answer.replys.all %}
+                                    <div id="{{comment.id}}" class="">
+                                          <small>{{  comment.body }}</small>
+                                          <footer ><small style="float:right"   class="blockquote-footer" ><a href="/profile/{{  comment.author }}" >@{{comment.author }} </a> | {{comment.date}} </small></footer> 
+                                          <div style="clear: both;"><hr></div>
+                                    </div>
+                                    {% endfor %}
+                                    {% if user.is_authenticated %} 
+                                    <form method="post" action="{{object.slug}}"  class="d-flex">
+                                          {% csrf_token %}
+                                          <input required name="bodycomment" style="border: none; float: left;  " placeholder="add a comment" >
+                                          <input required name="answer_id" style="height: 0px;"  class="form-control me-2 invisible " value="{{answer.id}}"  placeholder="Commentbody" aria-label="body">
+                                          <button  type="submit"    class="badge btn-dark" style="  float:right"  >Send</button>
+                                          <div style="clear: both;"></div><br>      
+                                    </form>
+                                    {% else %}
+                                    <br>
+                                    <code>Please login to add comment</code>
+                                   
+                                    {% endif %}
+
+                              </div>
+                        </div>   
+                        <div style="clear: both;" ></div><hr>
+                        {% endfor %} 
+                        {% if user.is_authenticated %} 
+                        <form method="post" action="{{object.slug}}"  class="d-flex">
+                              {% csrf_token %}
+                              <textarea  name="body" cols="40" rows="10" id="id_body" data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;,   &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Image&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [ &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: 835, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;extraPlugins&quot;: &quot;codesnippet&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_body" data-type="ckeditortype"></textarea>
+                             
+                              <button class="btn btn-outline-dark" type="submit">Answer</button>
+                        </form>
+                        {% else %}
+                        <br>
+                        <code>Please login to give solution to this answer</code>
+                        <a style="margin-right:5px;" href="/login" class="btn btn-primary" >Login </a>
+                        <a href="/signup" class="btn btn-primary" > Signup</a>
+                        {% endif %}
+                  </div>
+                  <div style="clear:both ;"></div><br>
+                  
+            </div>
+              
+  
+      </div>              
+            <div style="float: right; width: 29%;  " >
+            <div class="card-body">
+                  <h4 class="d-flex align-items-center mb-3"> Related questions</h4>
+                  {% for r in related_questions %}
+                  <div >
+                        <small>{{r.title}}</small>
+                        <p class=><small><small><i class="fa-solid fa-handshake-angle"></i>{{r.answers}} |  
+                        <i class="fa-solid fa-eye"></i> {% get_hit_count for r %}   </small></small></p>
+                        <hr>
+                  </div>
+                  {% endfor %}
+                    
+                 
+                    
+            </div>
+            </div>              
+            
+      
+      <div style="clear:both ;"></div>
+      <br><br><br><br>
+   
+</div>
+  
+{% endblock content %}

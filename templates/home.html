@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block content %}
+<title>Home</title>
+<div class="container">
+      <div  >
+            <br>
+         <div style="float: left; width: 69%; " class="card-body">
+               
+               <!--Block-->
+               
+               <h4 class="d-flex align-items-center mb-3"> Top questions for you </h4>
+               {% if object_list %}
+               {% for obj in object_list  %}
+               <div >
+               <p>{{obj.title}}</p>
+               <a  href="/category/{{obj.category.slug}}" type="button" class="btn btn-outline-secondary">{{obj.category}}</a>
+               <a  href="{% url 'detail' obj.id obj.slug  %} " type="button" class="btn btn-outline-primary">Details &#10141;</a>
+               <p style="float: right; margin-right: 50px;" class=><small><small><i class="fa-solid fa-handshake-angle"></i>{{obj.answers}} |  
+               <i class="fa-solid fa-eye"></i> {% get_hit_count for obj %} </small></small></p>
+               <div style="clear:both" ></div>
+               <hr>
+               {% endfor %}
+               {% else %}
+               <br><br><h5><center>no results</center></h5>
+               {% endif %}
+               </div>
+               <!--Block-->
+               
+               
+               
+            </div>      
+
+      </div>              
+      <div style="float: right; width: 29%; " >
+         <div class="card-body">
+               <h4 class="d-flex align-items-center mb-3"> Categories</h4>
+               {% for c in category %}
+               <div >
+               <a class="link-primary" href="/category/{{c.slug}}" ><small>Questions about <strong>{{c.name}}</strong></small></a>
+               
+               
+               <div style="clear:both" ></div>
+               <hr>
+               </div>
+               {% endfor %}
+              
+                                 
+               
+               
+               
+             </div>
+     </div> 
+
+{% endblock content %}

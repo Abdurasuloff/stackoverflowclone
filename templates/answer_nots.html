@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<title>Notification | {{user.first_name}} {{user.last_name}} </title>
+    
+<br><br>
+{% if answers %}
+{% for answer in answers %}
+
+<div class="container card border-secondary mb-3" style="max-width: 25rem;">
+             
+            
+      <div class="card-body text-secondary">
+            <small class="text-muted">{{ answer.date_answered|naturaltime }}</small>
+        <h5 class="card-title"> <a style="text-decoration: none;" href="/profile/{{answer.author.username}}"  >
+            <img
+            {% if answer.author.pic %}
+            src="{{answer.author.pic.url}}"
+            {% else %}
+            src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+            {% endif %}
+            class="rounded-circle"
+            height="35"
+            alt="Black and White Portrait of a Man"
+            loading="lazy" /><span style="font-size: 15px;" class="text-muted " > @{{answer.author.username}} </span></a><small style="color: black;" >answered to your <a href="{% url 'detail' answer.question.id answer.question.slug  %}" >question: </a></small></h5>
+            <p style="overflow: hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;" class="card-text">{{answer.body|safe}}</p>
+        
+      </div>
+    
+</div> 
+{% endfor %}
+{% else %}
+<br><br>
+<center>Nobody answered to your question</center>  
+{% endif %}
+</div>
+{% endblock %}

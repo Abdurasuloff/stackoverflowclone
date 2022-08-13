@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<title>Notification | {{user.first_name}} {{user.last_name}} </title>
+    
+<br><br>
+{% if likes %}
+{% for like in likes %}
+
+<div class="container card border-secondary mb-3" style="max-width: 25rem;">
+             
+            
+      <div class="card-body text-secondary">
+            <small class="text-muted">{{ like.date|naturaltime }}</small>
+        <h5 class="card-title"> <a style="text-decoration: none;" href="/profile/{{like.author.username}}"  >
+            <img
+            {% if like.author.pic %}
+            src="{{like.author.pic.url}}"
+            {% else %}
+            src = "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+            {% endif %}
+            class="rounded-circle"
+            height="35"
+            alt="Black and White Portrait of a Man"
+            loading="lazy" /><span style="font-size: 15px;" class="text-muted " > @{{like.author.username}} </span></a><small style="color: black;" >votes for your <a href="/detail/{{like.answer.question.slug}}#{{like.answer.id}}" >answer </a></small></h5>
+          <p class="card-text"></p>
+        
+      </div>
+    
+
+</div>
+{% endfor %}
+{% else %}
+<br><br>
+<center>Nobody votes for your answer</center>  
+{% endif %}
+
+{% endblock %}

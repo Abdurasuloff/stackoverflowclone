@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title> Ask question | {{user.first_name}} {{user.last_name}} </title>
+<br><br>
+<script src="/static/ckeditor/ckeditor-init.js" data-ckeditor-basepath="/static/ckeditor/ckeditor/" id="ckeditor-init-script"></script>
+<script src="/static/ckeditor/ckeditor/ckeditor.js"></script>
+<form method='POST'    > 
+{% csrf_token %}
+<div class="container">
+      
+
+      <center>Ask question from community</center><br>
+      <h6>Title of question</h6>
+      <input required type="text" name="title"  placeholder="Title of your question"  maxlength="150" class="textinput textInput form-control" >
+      <br>
+      <h6>Select a category</h6>
+      <select name="category" id="id_category">
+           
+            {% for cat in category %}
+            <option value="{{cat.id}}" selected>{{cat.name}}</option>
+            {% endfor %}
+      </select><br><br>
+
+      
+      <h6>Body part</h6>
+      <textarea  name="body" cols="80" rows="10" id="id_body" data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;,   &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Image&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [ &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: 835, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;extraPlugins&quot;: &quot;codesnippet&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload/&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse/&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_body" data-type="ckeditortype"></textarea>
+      <br><button  type="submit" class="btn btn-outline-primary" >Ask question</button>
+
+</div>
+
+
+  
+</form>
+
+{% endblock content %}
